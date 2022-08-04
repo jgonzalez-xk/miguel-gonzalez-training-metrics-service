@@ -16,6 +16,6 @@ public class PersonResolutionModelAssembler
     public EntityModel<PersonResolution> toModel(PersonResolution personResolution) {
 
         return EntityModel.of(personResolution,
-                linkTo(methodOn(PersonResolutionController.class).all()).withRel("personResolutions"));
+                linkTo(methodOn(PersonResolutionController.class).one(personResolution.getId())).withSelfRel());
     }
 }
