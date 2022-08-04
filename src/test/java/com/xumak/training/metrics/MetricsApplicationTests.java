@@ -1,4 +1,4 @@
-package com.miguel.restapp;
+package com.xumak.training.metrics;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
