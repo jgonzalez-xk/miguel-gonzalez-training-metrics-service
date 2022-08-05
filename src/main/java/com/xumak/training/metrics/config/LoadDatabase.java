@@ -20,7 +20,7 @@ class LoadDatabase {
             BatchLoaderRepository batchLoaderRepository) {
 
         return args -> {
-            personResolutionRepository.save(new PersonResolution(0, 0, 0, 0));
+            personResolutionRepository.save(new PersonResolution(0, 0, 0, 0, "www.google.com"));
 
             personResolutionRepository.findAll().forEach(personResolution -> log.info("Preloaded " + personResolution));
 

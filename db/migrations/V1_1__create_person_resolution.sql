@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS person_resolution (
     household_matches INT DEFAULT 0,
     nomatches INT DEFAULT 0,
     errors INT DEFAULT 0,
+    endpoint VARCHAR(255),
     CONSTRAINT person_res_id UNIQUE (id)
 );

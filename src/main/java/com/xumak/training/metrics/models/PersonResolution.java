@@ -30,12 +30,14 @@ public class PersonResolution {
     private int householdMatches;
     private int nomatches;
     private int errors;
+    private String endpoint;
 
-    public PersonResolution(int individualMatches, int householdMatches, int nomatches, int errors) {
+    public PersonResolution(int individualMatches, int householdMatches, int nomatches, int errors, String endpoint) {
         this.individualMatches = individualMatches;
         this.householdMatches = householdMatches;
         this.nomatches = nomatches;
         this.errors = errors;
+        this.endpoint = endpoint;
     }
 
 }
