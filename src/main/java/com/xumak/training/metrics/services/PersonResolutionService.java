@@ -28,19 +28,32 @@ public class PersonResolutionService {
         this.assembler = assembler;
     }
 
-    public EntityModel<PersonResolution> findById(int id) {
-        PersonResolution personResolution = repository.findById(id).orElseThrow(() -> new RuntimeException());
-        return assembler.toModel(personResolution);
+    public ResponseEntity<?> findById(int id) {
+        try {
+            PersonResolution personResolution = repository.findById(id).orElseThrow(() -> new RuntimeException());
+            EntityModel<PersonResolution> entityModel = assembler.toModel(personResolution);
+            return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                    .body(entityModel);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"state\": false}");
+        }
     }
 
-    public CollectionModel<EntityModel<PersonResolution>> findBetweenDates(Date start_date, Date end_date) {
-        List<EntityModel<PersonResolution>> personResolutions = repository.findByCreatedAtBetween(start_date, end_date)
-                .stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(personResolutions,
-                linkTo(methodOn(PersonResolutionController.class).all(start_date,
-                        end_date)).withSelfRel());
+    public ResponseEntity<?> findBetweenDates(Date start_date, Date end_date) {
+        try {
+            List<EntityModel<PersonResolution>> personResolutions = repository
+                    .findByCreatedAtBetween(start_date, end_date)
+                    .stream()
+                    .map(assembler::toModel)
+                    .collect(Collectors.toList());
+            CollectionModel<EntityModel<PersonResolution>> collectionModel = CollectionModel.of(personResolutions,
+                    linkTo(methodOn(PersonResolutionController.class).all(start_date,
+                            end_date)).withSelfRel());
+            return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                    .body(collectionModel);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"state\": false}");
+        }
     }
 
     public ResponseEntity<?> newPersonResolution(PersonResolution newPersonResolution) {

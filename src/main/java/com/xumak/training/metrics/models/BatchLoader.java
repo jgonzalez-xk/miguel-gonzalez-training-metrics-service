@@ -26,22 +26,11 @@ public class BatchLoader {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String fileName;
-    private Timestamp createdAt = new Timestamp(new Date().getTime());;
+    private Timestamp createdAt = new Timestamp(new Date().getTime());
     private Timestamp fileCreatedAt;
     private Timestamp filePickedupAt;
     private Timestamp fileProcessedAt;
     private int numRecords;
-
-    // public BatchLoader(String fileName, Timestamp fileCreatedAt, Timestamp
-    // filePickedupAt,
-    // Timestamp fileProcessedAt, int numRecords) {
-
-    // this.fileName = fileName;
-    // this.fileCreatedAt = fileCreatedAt;
-    // this.filePickedupAt = filePickedupAt;
-    // this.fileProcessedAt = fileProcessedAt;
-    // this.numRecords = numRecords;
-    // }
 
     public BatchLoader(String fileName) {
         this.fileName = fileName;
