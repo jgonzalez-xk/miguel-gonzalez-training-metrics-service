@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.xumak.training.metrics.controllers.BatchLoaderController;
@@ -29,42 +27,23 @@ public class BatchLoaderServiceImpl implements BatchLoaderService {
         this.assembler = assembler;
     }
 
-    public ResponseEntity<?> findById(int id) {
-        try {
-            BatchLoader batchLoader = repository.findById(id).orElseThrow(() -> new RuntimeException());
-            EntityModel<BatchLoader> entityModel = assembler.toModel(batchLoader);
-            return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(entityModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
+    public EntityModel<BatchLoader> findById(int id) {
+        BatchLoader batchLoader = repository.findById(id).orElseThrow(() -> new RuntimeException());
+        return assembler.toModel(batchLoader);
     }
 
-    public ResponseEntity<?> findBetweenDates(Date start_date, Date end_date) {
-        try {
-            List<EntityModel<BatchLoader>> personResolutions = repository.findByCreatedAtBetween(start_date, end_date)
-                    .stream()
-                    .map(assembler::toModel)
-                    .collect(Collectors.toList());
-            CollectionModel<EntityModel<BatchLoader>> collectionModel = CollectionModel.of(personResolutions,
-                    linkTo(methodOn(BatchLoaderController.class).all(start_date,
-                            end_date)).withSelfRel());
-            return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(collectionModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
-
+    public CollectionModel<EntityModel<BatchLoader>> findBetweenDates(Date start_date, Date end_date) {
+        List<EntityModel<BatchLoader>> personResolutions = repository.findByCreatedAtBetween(start_date, end_date)
+                .stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(personResolutions,
+                linkTo(methodOn(BatchLoaderController.class).all(start_date,
+                        end_date)).withSelfRel());
     }
 
-    public ResponseEntity<?> newBatchLoaderMetric(BatchLoader newBatchLoader) {
-        try {
-            EntityModel<BatchLoader> entityModel = assembler.toModel(repository.save(newBatchLoader));
-            return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body("{\"state\": true}");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
+    public EntityModel<BatchLoader> newBatchLoaderMetric(BatchLoader newBatchLoader) {
+        return assembler.toModel(repository.save(newBatchLoader));
     }
 
 }

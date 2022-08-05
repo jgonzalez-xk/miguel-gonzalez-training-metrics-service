@@ -2,16 +2,16 @@ package com.xumak.training.metrics.services;
 
 import java.util.Date;
 
-import org.springframework.http.ResponseEntity;
-
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import com.xumak.training.metrics.models.BatchLoader;
 
 public interface BatchLoaderService {
 
-    public ResponseEntity<?> findById(int id);
+    public EntityModel<BatchLoader> findById(int id);
 
-    public ResponseEntity<?> findBetweenDates(Date start_date, Date end_date);
+    public CollectionModel<EntityModel<BatchLoader>> findBetweenDates(Date start_date, Date end_date);
 
-    public ResponseEntity<?> newBatchLoaderMetric(BatchLoader newBatchLoader);
+    public EntityModel<BatchLoader> newBatchLoaderMetric(BatchLoader newBatchLoader);
 
 }
