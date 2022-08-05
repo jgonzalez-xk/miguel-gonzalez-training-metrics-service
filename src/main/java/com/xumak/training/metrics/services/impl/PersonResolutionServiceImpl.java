@@ -36,7 +36,7 @@ public class PersonResolutionServiceImpl implements PersonResolutionService {
         List<EntityModel<PersonResolution>> personResolutions = repository
                 .findByCreatedAtBetween(start_date, end_date)
                 .stream()
-                .map(assembler::toModel)
+                .map(value -> assembler.toModel(value))
                 .collect(Collectors.toList());
         return CollectionModel.of(personResolutions,
                 linkTo(methodOn(PersonResolutionController.class).all(start_date,
