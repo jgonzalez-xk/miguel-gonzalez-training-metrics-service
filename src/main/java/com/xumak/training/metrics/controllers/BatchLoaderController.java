@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xumak.training.metrics.models.BatchLoader;
-import com.xumak.training.metrics.services.BatchLoaderService;
+import com.xumak.training.metrics.services.impl.BatchLoaderServiceImpl;
 
 @RestController
 public class BatchLoaderController {
 
     @Autowired
-    private BatchLoaderService batchLoaderService;
+    private BatchLoaderServiceImpl batchLoaderService;
 
     @GetMapping("/metrics/batch-loader-metric/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
