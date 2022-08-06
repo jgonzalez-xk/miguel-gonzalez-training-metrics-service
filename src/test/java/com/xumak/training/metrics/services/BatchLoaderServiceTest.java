@@ -1,4 +1,4 @@
-package com.xumak.training.metrics.controllers;
+package com.xumak.training.metrics.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,60 +17,61 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 
-import com.xumak.training.metrics.data.PersonResolutionRepository;
-import com.xumak.training.metrics.models.PersonResolution;
-import com.xumak.training.metrics.services.impl.PersonResolutionServiceImpl;
-import com.xumak.training.metrics.utils.PersonResolutionModelAssembler;
+import com.xumak.training.metrics.controllers.BatchLoaderController;
+import com.xumak.training.metrics.data.BatchLoaderRepository;
+import com.xumak.training.metrics.models.BatchLoader;
+import com.xumak.training.metrics.services.impl.BatchLoaderServiceImpl;
+import com.xumak.training.metrics.utils.BatchLoaderModelAssembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonResolutionServiceTest {
+public class BatchLoaderServiceTest {
 
         @InjectMocks
-        PersonResolutionServiceImpl service;
+        BatchLoaderServiceImpl service;
         @Mock
-        PersonResolutionRepository repo;
+        BatchLoaderRepository repo;
         @Mock
-        PersonResolutionModelAssembler assembler;
+        BatchLoaderModelAssembler assembler;
 
         @Test
         void findById() {
-                // Mock PersonResolution Object
-                PersonResolution personResolution = new PersonResolution(0, 0, 0, 0, "www.google.com");
+                // Mock BatchLoader Object
+                BatchLoader personResolution = new BatchLoader("NewFile.txt");
 
-                // Mock PersonResolutionRepository
+                // Mock BatchLoaderRepository
                 Mockito.when(repo.findById(personResolution.getId()))
                                 .thenReturn(Optional.of(personResolution));
 
-                // Mock PersonResolutionModelAssembler
-                EntityModel<PersonResolution> entityModel = EntityModel.of(personResolution,
-                                linkTo(methodOn(PersonResolutionController.class).one(personResolution.getId()))
+                // Mock BatchLoaderModelAssembler
+                EntityModel<BatchLoader> entityModel = EntityModel.of(personResolution,
+                                linkTo(methodOn(BatchLoaderController.class).one(personResolution.getId()))
                                                 .withSelfRel());
                 Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
 
-                // Assert PersonResolutionServiceImpl return the correct EntityModel
+                // Assert BatchLoaderServiceImpl return the correct EntityModel
                 assertEquals(service.findById(personResolution.getId()), entityModel);
         }
 
         @Test
         void findBetweenDates() {
 
-                List<PersonResolution> newList = new ArrayList<>();
-                PersonResolution personResolution = new PersonResolution(0, 0, 0, 0, "www.google.com");
+                List<BatchLoader> newList = new ArrayList<>();
+                BatchLoader personResolution = new BatchLoader("NewFile.txt");
                 newList.add(personResolution);
 
-                EntityModel<PersonResolution> entityModel = EntityModel.of(personResolution,
-                                linkTo(methodOn(PersonResolutionController.class).one(personResolution.getId()))
+                EntityModel<BatchLoader> entityModel = EntityModel.of(personResolution,
+                                linkTo(methodOn(BatchLoaderController.class).one(personResolution.getId()))
                                                 .withSelfRel());
 
                 Date start_date = Date.from(ZonedDateTime.now().minusMonths(5).toInstant());
                 Date end_date = new Date();
-                List<EntityModel<PersonResolution>> personResolutions = new ArrayList<>();
+                List<EntityModel<BatchLoader>> personResolutions = new ArrayList<>();
                 personResolutions.add(entityModel);
-                CollectionModel<EntityModel<PersonResolution>> collectionModel = CollectionModel.of(personResolutions,
-                                linkTo(methodOn(PersonResolutionController.class).all(start_date,
+                CollectionModel<EntityModel<BatchLoader>> collectionModel = CollectionModel.of(personResolutions,
+                                linkTo(methodOn(BatchLoaderController.class).all(start_date,
                                                 end_date)).withSelfRel());
                 Mockito.when(repo.findByCreatedAtBetween(start_date, end_date)).thenReturn(newList);
                 Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
