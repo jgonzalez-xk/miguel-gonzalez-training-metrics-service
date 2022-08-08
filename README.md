@@ -12,6 +12,15 @@ Then you should run `make start`.
 
 Config variables are found on the `.env` file.
 
+| Variable Name  |      Description      |
+| :------------- | :-------------------: |
+| DB_USER        |   Database username   |
+| DB_PSWRD       |   Database password   |
+| DB_PORT        |     Database port     |
+| DB_NAME        |     Database name     |
+| DB_SCHEMA      |    Database Schema    |
+| CONTAINER_NAME | Docker container name |
+
 `make config` loads db and flyway config variables into `application.properties` & `flyway.conf`.
 
 ## Clean
