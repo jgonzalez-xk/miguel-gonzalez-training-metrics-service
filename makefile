@@ -3,7 +3,7 @@ export
 
 .PHONY: all db db_migrate compile start
 
-all: db db_migrate config compile start
+all: config db db_migrate compile start
 
 config:
 	@echo "***************************Configuring needed variables***************************"
