@@ -38,5 +38,8 @@ clean:
 	mvn clean
 	mvn flyway:clean -Dflyway.configFiles=./flyway.conf
 
+test:
+	mvn test
+
 start:
 	java -jar target/metrics-0.0.1-SNAPSHOT.jar
