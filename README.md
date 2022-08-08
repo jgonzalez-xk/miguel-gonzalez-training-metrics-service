@@ -2,23 +2,23 @@
 
 ## Instructions
 
-### Start
+## Start
 
 On first run application you should run `make`.
 
 Then you should run `make start`.
 
-### Config
+## Config
 
 Config variables are found on the `.env` file.
 
 `make config` loads db and flyway config variables into `application.properties` & `flyway.conf`.
 
-### Clean
+## Clean
 
 `make clean` cleans the project and the database using `mvn clean & flyway:clean`.
 
-### DB & DB Cleanup
+## DB & DB Cleanup
 
 DB is running on docker.
 
@@ -26,7 +26,7 @@ DB is running on docker.
 
 `make db_migrate` is used to run the migrations.
 
-### Testing
+## Testing
 
 `make test` runs the unit tests.
 
