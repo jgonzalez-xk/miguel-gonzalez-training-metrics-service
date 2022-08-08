@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExtendWith(MockitoExtension.class)
 public class BatchLoaderServiceTest {
 
+        // MOCK VARIABLES
+        BatchLoader batchLoader;
+        EntityModel<BatchLoader> entityModel;
+
         @InjectMocks
         BatchLoaderServiceImpl service;
         @Mock
@@ -36,45 +41,47 @@ public class BatchLoaderServiceTest {
         @Mock
         BatchLoaderModelAssembler assembler;
 
+        @BeforeEach
+        void setup() {
+                // Mock BatchLoader Object
+                batchLoader = new BatchLoader("NewFile.txt");
+                // Mock BatchLoaderModelAssembler
+                entityModel = EntityModel.of(batchLoader,
+                                linkTo(methodOn(BatchLoaderController.class).one(batchLoader.getId()))
+                                                .withSelfRel());
+                // Mock BatchLoaderAssempler
+                Mockito.when(assembler.toModel(batchLoader)).thenReturn(entityModel);
+        }
+
         @Test
         void findById() {
-                // Mock BatchLoader Object
-                BatchLoader personResolution = new BatchLoader("NewFile.txt");
+                // Mock BatchLoaderRepository findById
+                Mockito.when(repo.findById(batchLoader.getId()))
+                                .thenReturn(Optional.of(batchLoader));
 
-                // Mock BatchLoaderRepository
-                Mockito.when(repo.findById(personResolution.getId()))
-                                .thenReturn(Optional.of(personResolution));
-
-                // Mock BatchLoaderModelAssembler
-                EntityModel<BatchLoader> entityModel = EntityModel.of(personResolution,
-                                linkTo(methodOn(BatchLoaderController.class).one(personResolution.getId()))
-                                                .withSelfRel());
-                Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
-
-                // Assert BatchLoaderServiceImpl return the correct EntityModel
-                assertEquals(service.findById(personResolution.getId()), entityModel);
+                assertEquals(service.findById(batchLoader.getId()), entityModel);
         }
 
         @Test
         void findBetweenDates() {
-
-                List<BatchLoader> newList = new ArrayList<>();
-                BatchLoader personResolution = new BatchLoader("NewFile.txt");
-                newList.add(personResolution);
-
-                EntityModel<BatchLoader> entityModel = EntityModel.of(personResolution,
-                                linkTo(methodOn(BatchLoaderController.class).one(personResolution.getId()))
-                                                .withSelfRel());
-
                 Date start_date = Date.from(ZonedDateTime.now().minusMonths(5).toInstant());
                 Date end_date = new Date();
-                List<EntityModel<BatchLoader>> personResolutions = new ArrayList<>();
-                personResolutions.add(entityModel);
-                CollectionModel<EntityModel<BatchLoader>> collectionModel = CollectionModel.of(personResolutions,
+
+                // List for the mocked repo
+                List<BatchLoader> newList = new ArrayList<>();
+                newList.add(batchLoader);
+
+                // List for the expected result
+                List<EntityModel<BatchLoader>> batchLoaders = new ArrayList<>();
+                batchLoaders.add(entityModel);
+
+                // Expected result
+                CollectionModel<EntityModel<BatchLoader>> collectionModel = CollectionModel.of(batchLoaders,
                                 linkTo(methodOn(BatchLoaderController.class).all(start_date,
                                                 end_date)).withSelfRel());
+
+                // Mock BatchLoaderRepository findByCreatedAtBetween
                 Mockito.when(repo.findByCreatedAtBetween(start_date, end_date)).thenReturn(newList);
-                Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
 
                 assertEquals(service.findBetweenDates(start_date, end_date), collectionModel);
         }

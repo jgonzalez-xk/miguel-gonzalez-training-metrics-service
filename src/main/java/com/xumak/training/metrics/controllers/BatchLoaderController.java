@@ -51,9 +51,9 @@ public class BatchLoaderController {
     }
 
     @PostMapping("/metrics/batch-loader-metric")
-    ResponseEntity<?> newBatchLoaderMetric(@RequestBody BatchLoader newBatchLoader) {
+    ResponseEntity<?> newBatchLoader(@RequestBody BatchLoader newBatchLoader) {
         try {
-            EntityModel<BatchLoader> entityModel = batchLoaderService.newBatchLoaderMetric(newBatchLoader);
+            EntityModel<BatchLoader> entityModel = batchLoaderService.newBatchLoader(newBatchLoader);
             return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                     .body("{\"state\": true}");
         } catch (Exception e) {

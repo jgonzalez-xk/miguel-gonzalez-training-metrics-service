@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +29,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExtendWith(MockitoExtension.class)
 public class PersonResolutionServiceTest {
 
+        // MOCK VARIABLES
+        PersonResolution personResolution;
+        EntityModel<PersonResolution> entityModel;
+
         @InjectMocks
         PersonResolutionServiceImpl service;
         @Mock
@@ -34,19 +40,23 @@ public class PersonResolutionServiceTest {
         @Mock
         PersonResolutionModelAssembler assembler;
 
-        @Test
-        void findById() {
-                PersonResolution personResolution = new PersonResolution(0, 0, 0, 0, "www.google.com");
-
-                // Expected result
-                EntityModel<PersonResolution> entityModel = EntityModel.of(personResolution,
+        @BeforeEach
+        void setup() {
+                // Mock PersonResolution Object
+                personResolution = new PersonResolution(0, 0, 0, 0, "www.google.com");
+                // Mock PersonResolution ModelAssembler
+                entityModel = EntityModel.of(personResolution,
                                 linkTo(methodOn(PersonResolutionController.class).one(personResolution.getId()))
                                                 .withSelfRel());
+                // Mock PersonResolution Assempler
+                Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
+        }
 
-                // Mock methods used in service
+        @Test
+        void findById() {
+                // Mock PersonResolutionRepository findById
                 Mockito.when(repo.findById(personResolution.getId()))
                                 .thenReturn(Optional.of(personResolution));
-                Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
 
                 assertEquals(service.findById(personResolution.getId()), entityModel);
         }
@@ -55,15 +65,13 @@ public class PersonResolutionServiceTest {
         void findBetweenDates() {
                 Date start_date = Date.from(ZonedDateTime.now().minusMonths(5).toInstant());
                 Date end_date = new Date();
+
+                // List for the mocked repo
                 List<PersonResolution> newList = new ArrayList<>();
-                PersonResolution personResolution = new PersonResolution(0, 0, 0, 0, "www.google.com");
                 newList.add(personResolution);
 
-                // Mocking assembler's logic for expected result
+                // List for the expected result
                 List<EntityModel<PersonResolution>> personResolutions = new ArrayList<>();
-                EntityModel<PersonResolution> entityModel = EntityModel.of(personResolution,
-                                linkTo(methodOn(PersonResolutionController.class).one(personResolution.getId()))
-                                                .withSelfRel());
                 personResolutions.add(entityModel);
 
                 // Expected result
@@ -71,9 +79,8 @@ public class PersonResolutionServiceTest {
                                 linkTo(methodOn(PersonResolutionController.class).all(start_date,
                                                 end_date)).withSelfRel());
 
-                // Mock methods used in service
+                // Mock PersonResolutionRepository findByCreatedAtBetween
                 Mockito.when(repo.findByCreatedAtBetween(start_date, end_date)).thenReturn(newList);
-                Mockito.when(assembler.toModel(personResolution)).thenReturn(entityModel);
 
                 assertEquals(service.findBetweenDates(start_date, end_date), collectionModel);
         }

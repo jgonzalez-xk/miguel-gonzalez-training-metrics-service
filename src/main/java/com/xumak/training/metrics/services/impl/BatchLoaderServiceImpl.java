@@ -42,7 +42,7 @@ public class BatchLoaderServiceImpl implements BatchLoaderService {
                         end_date)).withSelfRel());
     }
 
-    public EntityModel<BatchLoader> newBatchLoaderMetric(BatchLoader newBatchLoader) {
+    public EntityModel<BatchLoader> newBatchLoader(BatchLoader newBatchLoader) {
         return assembler.toModel(repository.save(newBatchLoader));
     }
 

@@ -52,7 +52,7 @@ public class PersonResolutionController {
     }
 
     @PostMapping(value = "/metrics/person-resolution-metric")
-    ResponseEntity<?> newPersonResolutionMetric(@RequestBody PersonResolution newPersonResolution) {
+    ResponseEntity<?> newPersonResolution(@RequestBody PersonResolution newPersonResolution) {
         try {
             EntityModel<PersonResolution> entityModel = personResolutionService
                     .newPersonResolution(newPersonResolution);

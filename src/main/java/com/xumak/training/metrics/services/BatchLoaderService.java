@@ -12,6 +12,6 @@ public interface BatchLoaderService {
 
     public CollectionModel<EntityModel<BatchLoader>> findBetweenDates(Date start_date, Date end_date);
 
-    public EntityModel<BatchLoader> newBatchLoaderMetric(BatchLoader newBatchLoader);
+    public EntityModel<BatchLoader> newBatchLoader(BatchLoader newBatchLoader);
 
 }
