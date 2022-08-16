@@ -7,14 +7,14 @@ all: config db db_migrate compile start
 
 config:
 	@echo "***************************Configuring needed variables***************************"
-	echo "flyway.user=${DB_USER}" >> ./flyway.conf
-	echo "flyway.password=${DB_PSWRD}" >> ./flyway.conf
-	echo "flyway.schemas=${DB_SCHEMA}" >> ./flyway.conf
-	echo "flyway.url=jdbc:postgresql://localhost:5432/${DB_NAME}" >> ./flyway.conf
-	echo "flyway.locations=filesystem:db/migrations" >> ./flyway.conf
-	echo "spring.datasource.url=jdbc:postgresql://localhost:5432/${DB_NAME}" >> ./application.properties
-	echo "spring.datasource.username=${DB_USER}" >> ./application.properties
-	echo "spring.datasource.password=${DB_PSWRD}" >> ./application.properties
+	echo "flyway.user=${DB_USER}" >> ./src/main/resources/flyway.conf
+	echo "flyway.password=${DB_PSWRD}" >> ./src/main/resources/flyway.conf
+	echo "flyway.schemas=${DB_SCHEMA}" >> ./src/main/resources/flyway.conf
+	echo "flyway.url=jdbc:postgresql://localhost:5432/${DB_NAME}" >> ./src/main/resources/flyway.conf
+	echo "flyway.locations=filesystem:db/migrations" >> ./src/main/resources/flyway.conf
+	echo "spring.datasource.url=jdbc:postgresql://localhost:5432/${DB_NAME}" >> ./src/main/resources/application.properties
+	echo "spring.datasource.username=${DB_USER}" >> ./src/main/resources/application.properties
+	echo "spring.datasource.password=${DB_PSWRD}" >> ./src/main/resources/application.properties
  
 compile:
 	@echo "***************************Compiling***************************"
