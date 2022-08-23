@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@RequestMapping("/metrics/person-resolution-metric")
 public class PersonResolutionController {
 
     @Autowired
     private PersonResolutionServiceImpl personResolutionService;
 
-    @GetMapping("/metrics/person-resolution-metric/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
         try {
             EntityModel<PersonResolution> entityModel = personResolutionService.findById(id);
@@ -37,7 +39,7 @@ public class PersonResolutionController {
 
     }
 
-    @GetMapping("/metrics/person-resolution-metric")
+    @GetMapping()
     public ResponseEntity<?> all(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start_date,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
@@ -51,7 +53,7 @@ public class PersonResolutionController {
         }
     }
 
-    @PostMapping(value = "/metrics/person-resolution-metric")
+    @PostMapping()
     ResponseEntity<?> newPersonResolution(@RequestBody PersonResolution newPersonResolution) {
         try {
             EntityModel<PersonResolution> entityModel = personResolutionService

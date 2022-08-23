@@ -13,18 +13,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xumak.training.metrics.models.BatchLoader;
 import com.xumak.training.metrics.services.impl.BatchLoaderServiceImpl;
 
-@RestController
+@RestController()
+@RequestMapping("/metrics/batch-loader-metric")
 public class BatchLoaderController {
 
     @Autowired
     private BatchLoaderServiceImpl batchLoaderService;
 
-    @GetMapping("/metrics/batch-loader-metric/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
         try {
             EntityModel<BatchLoader> entityModel = batchLoaderService.findById(id);
@@ -35,7 +37,7 @@ public class BatchLoaderController {
         }
     }
 
-    @GetMapping("/metrics/batch-loader-metric")
+    @GetMapping()
     public ResponseEntity<?> all(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start_date,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
@@ -50,7 +52,7 @@ public class BatchLoaderController {
 
     }
 
-    @PostMapping("/metrics/batch-loader-metric")
+    @PostMapping()
     ResponseEntity<?> newBatchLoader(@RequestBody BatchLoader newBatchLoader) {
         try {
             EntityModel<BatchLoader> entityModel = batchLoaderService.newBatchLoader(newBatchLoader);
