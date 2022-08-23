@@ -2,6 +2,7 @@ package com.xumak.training.metrics.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xumak.training.metrics.error.StateFalseException;
 import com.xumak.training.metrics.models.PersonResolution;
 import com.xumak.training.metrics.services.impl.PersonResolutionServiceImpl;
 
@@ -22,39 +23,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/metrics/person-resolution-metric")
-public class PersonResolutionController {
+public class PersonResolutionController extends StateFalseException {
 
     @Autowired
     private PersonResolutionServiceImpl personResolutionService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> one(@PathVariable int id) {
-        try {
-            EntityModel<PersonResolution> entityModel = personResolutionService.findById(id);
-            return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(entityModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
-
+    public ResponseEntity<EntityModel<PersonResolution>> one(@PathVariable int id) {
+        EntityModel<PersonResolution> entityModel = personResolutionService.findById(id);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @GetMapping()
-    public ResponseEntity<?> all(
+    public ResponseEntity<CollectionModel<EntityModel<PersonResolution>>> all(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start_date,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
-        try {
-            CollectionModel<EntityModel<PersonResolution>> collectionModel = personResolutionService
-                    .findBetweenDates(start_date, end_date);
-            return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(collectionModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
+        CollectionModel<EntityModel<PersonResolution>> collectionModel = personResolutionService
+                .findBetweenDates(start_date, end_date);
+        return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(collectionModel);
     }
 
     @PostMapping()
-    ResponseEntity<?> newPersonResolution(@RequestBody PersonResolution newPersonResolution) {
+    ResponseEntity<String> newPersonResolution(@RequestBody PersonResolution newPersonResolution) {
         try {
             EntityModel<PersonResolution> entityModel = personResolutionService
                     .newPersonResolution(newPersonResolution);

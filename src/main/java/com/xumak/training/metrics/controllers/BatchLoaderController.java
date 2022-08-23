@@ -16,44 +16,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xumak.training.metrics.error.StateFalseException;
 import com.xumak.training.metrics.models.BatchLoader;
 import com.xumak.training.metrics.services.impl.BatchLoaderServiceImpl;
 
 @RestController()
 @RequestMapping("/metrics/batch-loader-metric")
-public class BatchLoaderController {
+public class BatchLoaderController extends StateFalseException {
 
     @Autowired
     private BatchLoaderServiceImpl batchLoaderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> one(@PathVariable int id) {
-        try {
-            EntityModel<BatchLoader> entityModel = batchLoaderService.findById(id);
-            return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(entityModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
+    public ResponseEntity<EntityModel<BatchLoader>> one(@PathVariable int id) {
+        EntityModel<BatchLoader> entityModel = batchLoaderService.findById(id);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @GetMapping()
-    public ResponseEntity<?> all(
+    public ResponseEntity<CollectionModel<EntityModel<BatchLoader>>> all(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start_date,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
-        try {
-            CollectionModel<EntityModel<BatchLoader>> collectionModel = batchLoaderService.findBetweenDates(start_date,
-                    end_date);
-            return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                    .body(collectionModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"state\": false}");
-        }
-
+        CollectionModel<EntityModel<BatchLoader>> collectionModel = batchLoaderService.findBetweenDates(start_date,
+                end_date);
+        return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(collectionModel);
     }
 
     @PostMapping()
-    ResponseEntity<?> newBatchLoader(@RequestBody BatchLoader newBatchLoader) {
+    ResponseEntity<String> newBatchLoader(@RequestBody BatchLoader newBatchLoader) {
         try {
             EntityModel<BatchLoader> entityModel = batchLoaderService.newBatchLoader(newBatchLoader);
             return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -62,5 +54,4 @@ public class BatchLoaderController {
             return ResponseEntity.badRequest().body("{\"state\": false}");
         }
     }
-
 }
