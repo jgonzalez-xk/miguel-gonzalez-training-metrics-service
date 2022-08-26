@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-public class BatchLoaderControllerWithMockMVCTest {
+public class BatchLoaderRESTControllerTest {
 
     private String uri = "/metrics/batch-loader-metric";
 
