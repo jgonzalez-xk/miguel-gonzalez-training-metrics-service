@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-public class BatchLoaderRESTControllerTest {
+public class BatchLoaderControllerTest {
 
     private String uri = "/metrics/batch-loader-metric";
 
@@ -71,7 +70,6 @@ public class BatchLoaderRESTControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(batchLoader))
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().string(containsString("{\"state\": true}")))
                 .andExpect(status().isCreated());
     }
@@ -83,7 +81,6 @@ public class BatchLoaderRESTControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(null))
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isBadRequest());
     }
 

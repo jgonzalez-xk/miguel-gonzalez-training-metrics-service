@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-public class PersonResolutionRESTControllerTest {
+public class PersonResolutionControllerTest {
 
     private String uri = "/metrics/person-resolution-metric/";
 
