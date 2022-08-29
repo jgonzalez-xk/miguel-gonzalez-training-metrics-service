@@ -26,7 +26,7 @@ db:
 
 db_migrate:
 	@echo "***************************Migrating db using flyway***************************"
-	mvn flyway:migrate -Dflyway.configFiles=./flyway.conf
+	mvn flyway:migrate -Dflyway.configFiles=./src/main/resources/flyway.conf
 
 db_clean:
 	@echo "***************************Stoping & removing db container***************************"
@@ -36,7 +36,8 @@ db_clean:
 clean:
 	@echo "***************************Cleaning***************************"
 	mvn clean
-	mvn flyway:clean -Dflyway.configFiles=./flyway.conf
+	mvn flyway:clean -Dflyway.configFiles=./src/main/resources/flyway.conf
+	mvn flyway:migrate -Dflyway.configFiles=./src/main/resources/flyway.conf
 
 test:
 	mvn test
