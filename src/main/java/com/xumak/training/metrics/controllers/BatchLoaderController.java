@@ -33,8 +33,7 @@ public class BatchLoaderController {
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<BatchLoader>> one(@PathVariable int id) {
         EntityModel<BatchLoader> entityModel = batchLoaderService.findById(id);
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+        return ResponseEntity.ok(entityModel);
     }
 
     @GetMapping()
@@ -43,8 +42,7 @@ public class BatchLoaderController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
         CollectionModel<EntityModel<BatchLoader>> collectionModel = batchLoaderService.findBetweenDates(start_date,
                 end_date);
-        return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(collectionModel);
+        return ResponseEntity.ok(collectionModel);
     }
 
     @PostMapping()

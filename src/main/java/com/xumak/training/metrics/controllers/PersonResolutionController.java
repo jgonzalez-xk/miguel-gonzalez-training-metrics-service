@@ -34,8 +34,7 @@ public class PersonResolutionController {
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<PersonResolution>> one(@PathVariable int id) {
         EntityModel<PersonResolution> entityModel = personResolutionService.findById(id);
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+        return ResponseEntity.ok(entityModel);
     }
 
     @GetMapping()
@@ -44,8 +43,7 @@ public class PersonResolutionController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end_date) {
         CollectionModel<EntityModel<PersonResolution>> collectionModel = personResolutionService
                 .findBetweenDates(start_date, end_date);
-        return ResponseEntity.created(collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(collectionModel);
+        return ResponseEntity.ok(collectionModel);
     }
 
     @PostMapping()
