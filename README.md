@@ -2,6 +2,22 @@
 
 ## Instructions
 
+## Commands
+
+| Command          |                      Description                       |
+| :--------------- | :----------------------------------------------------: |
+| config           |              Creates needed config files               |
+| container_config | Creates needed config files to run as docker container |
+| compile          |                      Compiles app                      |
+| docker_compose   |     Runs docker-compose up / Runs app on container     |
+| db               |                   Runs db container                    |
+| db_migrate       |                   Runs db migrations                   |
+| db_clean         |                  Removes db container                  |
+| clean            |                       Cleans app                       |
+| test             |                       Runs tests                       |
+| start            |          Starts java app using compiled files          |
+| container_start  |           Configs and runs app on container            |
+
 ## Start
 
 On first run application you should run `make` or `make all`.
