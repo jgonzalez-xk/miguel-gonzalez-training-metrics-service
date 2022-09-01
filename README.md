@@ -4,28 +4,32 @@
 
 ## Start
 
-On first run application you should run `make`.
+On first run application you should run `make` or `make all`.
 
 Then you should run `make start`.
+
+If you want to run it on docker use `make container_start`.
 
 ## Config
 
 Config variables are found on the `.env` file.
 
-| Variable Name  |      Description      |
-| :------------- | :-------------------: |
-| DB_USER        |   Database username   |
-| DB_PSWRD       |   Database password   |
-| DB_PORT        |     Database port     |
-| DB_NAME        |     Database name     |
-| DB_SCHEMA      |    Database Schema    |
-| CONTAINER_NAME | Docker container name |
+| Variable Name     |       Description       |
+| :---------------- | :---------------------: |
+| DB_USER           |    Database username    |
+| DB_PSWRD          |    Database password    |
+| DB_PORT           |      Database port      |
+| DB_NAME           |      Database name      |
+| DB_SCHEMA         |     Database Schema     |
+| DB_CONTAINER_NAME | Postgres container name |
 
 `make config` loads db and flyway config variables into `application.properties` & `flyway.conf`.
+`make container_config` changes connection names according to the container's names.
 
 ## Clean
 
 `make clean` cleans the project and the database using `mvn clean & flyway:clean`.
+`make clean_all` cleans db and project.
 
 ## DB & DB Cleanup
 

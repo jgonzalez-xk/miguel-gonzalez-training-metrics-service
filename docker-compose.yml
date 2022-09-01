@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+  db_setup:
+    image: flyway/flyway:9.2.0
+    command: -configFiles=/flyway/conf/flyway.config -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    volumes:
+      - ./db/migrations:/flyway/sql
+      - ./src/main/resources/flyway.conf:/flyway/conf/flyway.config
+    depends_on:
+      - ${DB_CONTAINER_NAME}
+  db:
+    container_name: ${DB_CONTAINER_NAME}
+    image: postgres:bullseye
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DB_USER} 
+      POSTGRES_PASSWORD: ${DB_PSWRD} 
+      POSTGRES_DB: ${DB_NAME}
+  web:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - ${DB_CONTAINER_NAME}
+    links:
+      - ${DB_CONTAINER_NAME}

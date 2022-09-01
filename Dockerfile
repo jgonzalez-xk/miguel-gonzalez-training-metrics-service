@@ -2,7 +2,7 @@ FROM maven:3.8.6-openjdk-8 as BUILD
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 FROM openjdk:8-jre
 
