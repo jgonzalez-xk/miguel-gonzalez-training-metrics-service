@@ -4,19 +4,21 @@
 
 ## Commands
 
-| Command          |                      Description                       |
-| :--------------- | :----------------------------------------------------: |
-| config           |              Creates needed config files               |
-| container_config | Creates needed config files to run as docker container |
-| compile          |                      Compiles app                      |
-| docker_compose   |     Runs docker-compose up / Runs app on container     |
-| db               |                   Runs db container                    |
-| db_migrate       |                   Runs db migrations                   |
-| db_clean         |                  Removes db container                  |
-| clean            |                       Cleans app                       |
-| test             |                       Runs tests                       |
-| start            |          Starts java app using compiled files          |
-| container_start  |           Configs and runs app on container            |
+| Command          |                           Description                            |
+| :--------------- | :--------------------------------------------------------------: |
+| config           |                   Creates needed config files                    |
+| container_config |      Creates needed config files to run as docker container      |
+| compile          |                           Compiles app                           |
+| docker_compose   |          Runs docker-compose up / Runs app on container          |
+| db               |                        Runs db container                         |
+| db_migrate       |                        Runs db migrations                        |
+| db_clean         |                       Removes db container                       |
+| kubernetes_clean |                       Deletes deployments                        |
+| clean            |                            Cleans app                            |
+| test             |                            Runs tests                            |
+| start            |               Starts java app using compiled files               |
+| container_start  |                Configs and runs app on container                 |
+| kubernetes_start | Starts app on kubernetes based on the deployment on ./kubernetes |
 
 ## Start
 
